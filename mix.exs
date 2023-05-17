@@ -16,7 +16,7 @@ defmodule Bonfire.AI.MixProject do
     end
     ++
     [
-      app: :bonfire.ai,
+      app: :bonfire_ai,
       version: "0.0.1",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),

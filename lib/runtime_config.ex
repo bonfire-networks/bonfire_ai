@@ -10,7 +10,9 @@ defmodule Bonfire.AI.RuntimeConfig do
   def config do
     import Config
 
-    config :bonfire.ai,
+    Application.put_env(:nx, :default_backend, EXLA.Backend)
+
+    config :bonfire_ai,
       disabled: false
   end
 end

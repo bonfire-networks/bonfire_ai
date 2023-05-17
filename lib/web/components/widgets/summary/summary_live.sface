@@ -1,0 +1,4 @@
+<Bonfire.AI.Web.SummaryWidgetLive
+    text={@text}
+    id={:summary}
+/>

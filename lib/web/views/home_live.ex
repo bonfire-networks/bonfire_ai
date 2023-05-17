@@ -1,6 +1,5 @@
 defmodule Bonfire.AI.Web.HomeLive do
   use Bonfire.UI.Common.Web, :surface_live_view
-  alias Bonfire.UI.Me.LivePlugs
 
   declare_extension(
     "ExtensionTemplate",
@@ -13,27 +12,54 @@ defmodule Bonfire.AI.Web.HomeLive do
 
   declare_nav_link(l("Home"), page: "home", icon: "ri:home-line")
 
-  def mount(params, session, socket) do
-    live_plug(params, session, socket, [
-      LivePlugs.LoadCurrentAccount,
-      LivePlugs.LoadCurrentUser,
-      # LivePlugs.LoadCurrentUserCircles,
-      # LivePlugs.LoadCurrentAccountUsers,
-      Bonfire.UI.Common.LivePlugs.StaticChanged,
-      Bonfire.UI.Common.LivePlugs.Csrf,
-      Bonfire.UI.Common.LivePlugs.Locale,
-      &mounted/3
-    ])
+  on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
+
+  def mount(_params, _session, socket) do
+    {:ok, assign(
+        socket,
+        text: "",
+        serving: serving(),
+        results: [],
+        task: nil)}
   end
 
-  defp mounted(_params, _session, socket) do
-    {:ok,
-     assign(
-       socket,
-       page: "extension_template",
-       page_title: "ExtensionTemplate"
-     )}
+  def handle_event("predict", %{"text" => text}, socket) do
+    task = Task.async(fn -> predict(socket.assigns.serving, text) end)
+    {:noreply, assign(socket, text: text, task: task)}
   end
+
+  @impl true
+  def handle_info({ref, result}, socket) when socket.assigns.task.ref == ref do
+    Process.demonitor(ref, [:flush])
+    IO.inspect(result, label: "RESULT")
+    {:noreply, assign(socket, results: result.predictions, task: nil)}
+  end
+
+
+
+  defp predict(serving, text) do
+    Nx.Serving.run(serving, text) |> debug("ECCOOO")
+  end
+
+  defp serving do
+    {:ok, model_info} = Bumblebee.load_model({:hf, "finiteautomata/bertweet-base-emotion-analysis"})
+    {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, "vinai/bertweet-base"})
+    Bumblebee.Text.text_classification(model_info, tokenizer,
+      top_k: 4,
+      compile: [batch_size: 10, sequence_length: 100],
+      defn_options: [compiler: EXLA]
+    )
+  end
+
+  # {:ok, _} =
+  #   Supervisor.start_link(
+  #     [
+  #       {Nx.Serving, serving: serving, name: __MODULE__, batch_timeout: 100}
+  #     ],
+  #     strategy: :one_for_one
+  #   )
+
+  # Process.sleep(:infinity)
 
   def do_handle_event(
         "custom_event",

@@ -1,0 +1,4 @@
+<Bonfire.AI.Web.EmotionsDetectionLive
+    text={@text}
+    id="test"
+/>

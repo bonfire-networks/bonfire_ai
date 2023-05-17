@@ -1,5 +1,4 @@
-<div class="p-4">
-  <Bonfire.UI.Common.WidgetBlockLive>
+<Bonfire.UI.Common.WidgetBlockLive>
   <div class="p-4">
     <div class="flex items-center gap-2 font-bold">
       <#Icon iconify="bi:stars" class="w-5 h-5" />
@@ -21,9 +20,10 @@
     </button>
   </form> -->
     <button 
-      phx-submit="predict"
-      disabled={@task != nil}
-      class="btn mt-4 w-full btn-outline rounded-full normal-case">{l"Analyze post"}</button>
+        phx-target={@myself}
+        phx-click="predict"
+        disabled={@task != nil}
+        class="btn mt-4 w-full btn-outline rounded-full normal-case">{l"Analyze post"}</button>
     {#if @task}
         loading
     {#else}
@@ -38,4 +38,3 @@
     {/if}
   </div>
   </Bonfire.UI.Common.WidgetBlockLive>
-</div>
