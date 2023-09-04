@@ -19,11 +19,11 @@ config :mime, :types, %{
   "application/activity+json" => ["activity+json"]
 }
 
-config :bonfire.ai, :otp_app, :bonfire.ai
-config :bonfire_common, :otp_app, :bonfire.ai
-config :bonfire.ai, :repo_module, Bonfire.Common.Repo
-config :bonfire.ai, ecto_repos: [Bonfire.Common.Repo]
-config :bonfire.ai, :localisation_path, "priv/localisation"
+config :bonfire.ai(), :otp_app, :bonfire.ai()
+config :bonfire_common, :otp_app, :bonfire.ai()
+config :bonfire.ai(), :repo_module, Bonfire.Common.Repo
+config :bonfire.ai(), ecto_repos: [Bonfire.Common.Repo]
+config :bonfire.ai(), :localisation_path, "priv/localisation"
 
 config :bonfire_data_identity, Bonfire.Data.Identity.Credential, hasher_module: Argon2
 

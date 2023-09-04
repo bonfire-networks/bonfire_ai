@@ -1,11 +1,11 @@
 <div class="p-4">
   <Bonfire.UI.Common.WidgetBlockLive>
-  <div class="p-4">
-    <div class="flex items-center gap-2 font-bold">
-      <#Icon iconify="bi:stars" class="w-5 h-5" />
-      <div>{l"Emotion Detection"}</div>
-    </div>
-  <!-- <form phx-submit="predict" class="m-0 w-full flex-1 flex space-x-2">
+    <div class="p-4">
+      <div class="flex items-center gap-2 font-bold">
+        <#Icon iconify="bi:stars" class="w-5 h-5" />
+        <div>{l("Emotion Detection")}</div>
+      </div>
+      <!-- <form phx-submit="predict" class="m-0 w-full flex-1 flex space-x-2">
     <input
       class="block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
       type="text"
@@ -20,22 +20,23 @@
     Predict
     </button>
   </form> -->
-    <button 
-      phx-submit="predict"
-      disabled={@task != nil}
-      class="btn mt-4 w-full btn-outline rounded-full normal-case">{l"Analyze post"}</button>
-    {#if @task}
+      <button
+        phx-submit="predict"
+        disabled={@task != nil}
+        class="btn mt-4 w-full btn-outline rounded-full normal-case"
+      >{l("Analyze post")}</button>
+      {#if @task}
         loading
-    {#else}
-    <div class="flex mt-4 flex-col gap-3">
-      {#for emotion <- @results}
-      <div class="flex items-center gap-2">
-        <div class="text-sm font-medium w-20">{emotion.label}</div>
-        <progress class="progress w-24" value={emotion.score} max="1"></progress>
-      </div>
-      {/for}
+      {#else}
+        <div class="flex mt-4 flex-col gap-3">
+          {#for emotion <- @results}
+            <div class="flex items-center gap-2">
+              <div class="text-sm font-medium w-20">{emotion.label}</div>
+              <progress class="progress w-24" value={emotion.score} max="1" />
+            </div>
+          {/for}
+        </div>
+      {/if}
     </div>
-    {/if}
-  </div>
   </Bonfire.UI.Common.WidgetBlockLive>
 </div>

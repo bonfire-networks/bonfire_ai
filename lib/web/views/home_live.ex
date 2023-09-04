@@ -15,12 +15,14 @@ defmodule Bonfire.AI.Web.HomeLive do
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(_params, _session, socket) do
-    {:ok, assign(
-        socket,
-        text: "",
-        serving: serving(),
-        results: [],
-        task: nil)}
+    {:ok,
+     assign(
+       socket,
+       text: "",
+       serving: serving(),
+       results: [],
+       task: nil
+     )}
   end
 
   def handle_event("predict", %{"text" => text}, socket) do
@@ -35,15 +37,16 @@ defmodule Bonfire.AI.Web.HomeLive do
     {:noreply, assign(socket, results: result.predictions, task: nil)}
   end
 
-
-
   defp predict(serving, text) do
     Nx.Serving.run(serving, text) |> debug("ECCOOO")
   end
 
   defp serving do
-    {:ok, model_info} = Bumblebee.load_model({:hf, "finiteautomata/bertweet-base-emotion-analysis"})
+    {:ok, model_info} =
+      Bumblebee.load_model({:hf, "finiteautomata/bertweet-base-emotion-analysis"})
+
     {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, "vinai/bertweet-base"})
+
     Bumblebee.Text.text_classification(model_info, tokenizer,
       top_k: 4,
       compile: [batch_size: 10, sequence_length: 100],

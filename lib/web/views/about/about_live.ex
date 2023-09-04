@@ -9,14 +9,13 @@ defmodule Bonfire.AI.Web.AboutLive do
 
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
-
   defp mounted(_params, _session, socket) do
     {:ok,
      assign(
        socket,
        page: "About",
        page_title: "About the extension",
-       nav_items: Bonfire.Common.ExtensionModule.default_nav(:bonfire.ai)
+       nav_items: Bonfire.Common.ExtensionModule.default_nav(:bonfire.ai())
      )}
   end
 
