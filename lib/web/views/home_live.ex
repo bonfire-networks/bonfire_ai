@@ -10,7 +10,7 @@ defmodule Bonfire.AI.Web.HomeLive do
     ]
   )
 
-  declare_nav_link(l("Home"), page: "home", icon: "ri:home-line")
+  declare_nav_link(l("Home"), page: "home", icon: "carbon:home")
 
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
